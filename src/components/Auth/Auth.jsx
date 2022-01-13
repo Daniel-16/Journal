@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { MDBInput } from "mdbreact";
 import { Link } from "react-router-dom";
 import SignInImage from "../../Images/sign-in.png";
-import API from "../../utils/api";
 
 const Auth = () => {
   const [toggleIcon, setToggledIcon] = useState(false);
@@ -30,42 +29,22 @@ const Auth = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log([name, lastname, email, password]);
-    signupUser(name, lastname, email, password);
     setName("");
     setLastname("");
     setEmail("");
     setPassword("");
   };
-  const signupUser = async (name, lastname, email, password) => {
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const body = {
-        name,
-        lastname,
-        email,
-        password,
-      };
-      const res = await API.post("/signup", body, config);
-      console.log(res);
-    } catch (err) {
-      console.error(err);
-    }
-  };
   return (
     <div className="container">
       <div className="row">
-        <div className="col-lg">
+        <div className="col-md">
           <img
             className="img-fluid w-100 h-100"
             src={SignInImage}
             alt="Sign up"
           />
         </div>
-        <div className="col-lg">
+        <div className="col-md">
           <h2 className="font-weight-bold mt-3">Sign Up</h2>
           <form onSubmit={handleSubmit}>
             <MDBInput

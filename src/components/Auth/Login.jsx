@@ -27,10 +27,10 @@ const Login = () => {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-lg">
+        <div className="col-md">
           <img className="img-fluid w-100 h-100" src={Loginimg} alt="Login" />
         </div>
-        <div className="col-lg">
+        <div className="col-md">
           <h2 className="font-weight-bold mt-3">Log In</h2>
           <form onSubmit={handleSubmit}>
             <MDBInput
