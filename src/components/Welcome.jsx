@@ -1,21 +1,15 @@
 import React from "react";
 import NoteIllustration from "../Images/note-illustration.png";
 import { Link } from "react-router-dom";
+import Navbar from "./Nav";
 
 const Welcome = () => {
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <a href="/" className="nav-brand text-dark">
-          <h4 className="mt-2 font-weight-bold">Journal</h4>
-        </a>
-      </nav>
-      {/* <div className="container">
-        <h1 className="font-weight-bold mt-2">Journal</h1>
-      </div> */}
-      <div className="container" style={{ marginTop: "1rem" }}>
+      <Navbar />
+      <div className="container" style={{ marginTop: "0rem" }}>
         <div className="row">
-          <div className="col-lg-4 col-sm">
+          <div className="col-lg-7 col-sm">
             <h3 className="font-weight-bold animated fadeInUp mt-5">
               Welcome!
             </h3>
@@ -36,6 +30,8 @@ const Welcome = () => {
                   borderRadius: 5,
                   backgroundColor: "#6C63FF",
                   color: "white",
+                  textTransform: "none",
+                  fontSize: 17,
                 }}
               >
                 Get started <span className="fa fa-arrow-right ml-2"></span>
@@ -43,7 +39,7 @@ const Welcome = () => {
             </Link>
             {/* </div> */}
           </div>
-          <div className="col-lg-8 col-sm">
+          <div className="col-lg-5 col-sm">
             <img
               src={NoteIllustration}
               className="img-fluid w-100 h-100"
