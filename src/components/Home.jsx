@@ -10,10 +10,12 @@ const Home = ({ history }) => {
   // const [credentials] = useContext(CredentialsContext);
   const [username] = useState(localStorage.getItem("user"));
   useEffect(() => {
+    //Clears local storage if user is not authorized
     if (!localStorage.getItem("authToken")) {
       history.push("/login");
     }
 
+    //Checks the user's auth token before giving access to private data
     const fetchData = () => {
       const config = {
         headers: {
@@ -21,7 +23,7 @@ const Home = ({ history }) => {
         },
       };
       Axios.get("http://localhost:5000/api/private", config)
-        .then((res) => {
+        .then(() => {
           setPrivateData("Welcome! You can now add your daily Journals");
         })
         .catch((err) => {

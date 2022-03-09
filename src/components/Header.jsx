@@ -2,6 +2,7 @@ import React from "react";
 
 const Header = ({ username }) => {
   return (
+    //Username is passed from the Home component where username is set to localStorage.getItem("user")
     <div>
       <nav className="navbar navbar-light bg-white shadow-none">
         <h4 className="nav-brand mt-2 d-flex justify-content-start font-weight-bold">

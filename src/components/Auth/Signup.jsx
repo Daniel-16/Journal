@@ -15,10 +15,15 @@ const Signup = ({ history }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [loaderModal, setLoaderModal] = useState(false);
+
+  //The function below is to toggle the "see password" icon
   const toggle = () => {
     setToggledIcon(!toggleIcon);
     setShowPassword(!showPassword);
   };
+
+  //The function below is to toggle the error Modal
+  //The functions below are either to toggle functionalities or handle state change.
   const toggleModal = () => {
     setErrorModal(!errorModal);
   };
@@ -36,6 +41,8 @@ const Signup = ({ history }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    //Post the form fields to the database
     Axios.post("http://localhost:5000/api/auth/register", {
       fullname: username,
       email,
@@ -45,7 +52,6 @@ const Signup = ({ history }) => {
         console.log(res.data);
         localStorage.setItem("authToken", res.data.token);
         localStorage.setItem("user", res.data.user.fullname);
-        // history.push("/home");
         setLoading(true);
         toggleLoaderModal();
         setTimeout(() => {
@@ -55,6 +61,11 @@ const Signup = ({ history }) => {
       .catch((err) => {
         console.error(err);
         toggleModal();
+        /*The conditional statement is to check the status code of an error converted to string to determine the error message. 
+        400 = Bad request
+        401 = Unauthorized
+        500 = Server error
+        */
         if (err.toString().includes("400")) {
           console.log("Bad Request");
           setErrorMessage(
@@ -75,6 +86,7 @@ const Signup = ({ history }) => {
   return (
     <div
       className="container mb-3"
+      //The purpose of the style below is to disable pointer events while the loader modal is up to prevent user from closing a loader modal.
       style={
         (centerForm,
         loading ? { pointerEvents: "none" } : { pointerEvents: "all" })
@@ -98,13 +110,6 @@ const Signup = ({ history }) => {
           required
           value={username}
         />
-        {/* <MDBInput
-              label="Lastname"
-              type="text"
-              onChange={handleLastname}
-              required
-              value={lastname}
-            /> */}
         <MDBInput
           label="Email address"
           type="email"
@@ -156,9 +161,7 @@ const Signup = ({ history }) => {
         </small>
       </div>
       <MDBModal isOpen={errorModal} toggle={toggleModal} size="sm" centered>
-        {/* <MDBModalHeader toggle={toggleModal}> */}
         <h5 className="modal-header text-center">Error Creating Account!</h5>
-        {/* </MDBModalHeader> */}
         <MDBModalBody className="text-center">{errorMessage}</MDBModalBody>
         <div className="flex-center">
           <MDBModalFooter>

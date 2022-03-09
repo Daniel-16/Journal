@@ -14,6 +14,8 @@ const Login = ({ history }) => {
   const [errorModal, setErrorModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loaderModal, setLoaderModal] = useState(false);
+
+  //The following blocks of code are to just toggle functionality and handle state change
   const toggle = () => {
     setToggledIcon(!toggleIcon);
     setShowPassword(!showPassword);
@@ -41,7 +43,6 @@ const Login = ({ history }) => {
         localStorage.setItem("user", res.data.user.fullname);
         localStorage.setItem("authToken", res.data.token);
         setLoading(true);
-        // history.push("/home");
         toggleLoaderModal();
         setTimeout(() => {
           history.push("/home");
@@ -51,6 +52,11 @@ const Login = ({ history }) => {
         console.error(err);
         localStorage.clear();
         toggleModal();
+        /*The conditional statement is to check the status code of an error converted to string to determine the error message. 
+        400 = Bad request
+        401 = Unauthorized
+        500 = Server error
+        */
         if (err.toString().includes("401")) {
           setErrorMessage(
             "Login details are incorrect. Check your login details or create a new account if you don't have one."
@@ -65,6 +71,7 @@ const Login = ({ history }) => {
   return (
     <div
       className="container mb-3"
+      //The purpose of the style below is to disable pointer events while the loader modal is up to prevent user from closing a loader modal.
       style={loading ? { pointerEvents: "none" } : { pointerEvents: "all" }}
     >
       <h1 className="display-5 text-center" style={{ marginTop: "2rem" }}>
