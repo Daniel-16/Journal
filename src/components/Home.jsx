@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AddnotesImg from "../Images/add-notes.png";
 import Axios from "axios";
 // import { CredentialsContext } from "../App";
+import Header from "./Header";
 
 const Home = ({ history }) => {
   const [error, setError] = useState("");
@@ -41,41 +42,7 @@ const Home = ({ history }) => {
     </div>
   ) : (
     <div>
-      <nav className="navbar navbar-light bg-white shadow-none">
-        <h4 className="nav-brand mt-2 d-flex justify-content-start font-weight-bold">
-          Hello {username}!
-        </h4>
-        <div className="justify-content-end">
-          <div
-            style={{
-              background: "#6C63FF",
-              color: "white",
-              width: "40px",
-              height: "40px",
-              textAlign: "center",
-              padding: 7,
-              borderRadius: "50%",
-              /*display: "flex",
-              float: "right",
-              marginBottom: "2rem",
-              marginTop: "10px",
-              marginRight: 20,
-              */
-            }}
-          >
-            <h5
-              style={{
-                textAlign: "center",
-                margin: "auto",
-                fontWeight: "",
-                fontSize: 20,
-              }}
-            >
-              {username.charAt(0).toUpperCase()}
-            </h5>
-          </div>
-        </div>
-      </nav>
+      <Header username={username} />
       <br />
       <div className="container">
         <p className="text-center lead">{privateData}</p>

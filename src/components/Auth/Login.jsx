@@ -12,12 +12,17 @@ const Login = ({ history }) => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [errorModal, setErrorModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loaderModal, setLoaderModal] = useState(false);
   const toggle = () => {
     setToggledIcon(!toggleIcon);
     setShowPassword(!showPassword);
   };
   const toggleModal = () => {
     setErrorModal(!errorModal);
+  };
+  const toggleLoaderModal = () => {
+    setLoaderModal(!loaderModal);
   };
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -35,7 +40,12 @@ const Login = ({ history }) => {
         console.log(res.data);
         localStorage.setItem("user", res.data.user.fullname);
         localStorage.setItem("authToken", res.data.token);
-        history.push("/home");
+        setLoading(true);
+        // history.push("/home");
+        toggleLoaderModal();
+        setTimeout(() => {
+          history.push("/home");
+        }, 3000);
       })
       .catch((err) => {
         console.error(err);
@@ -43,15 +53,20 @@ const Login = ({ history }) => {
         toggleModal();
         if (err.toString().includes("401")) {
           setErrorMessage(
-            "Login details are incorrect. Check your login details or create a new account if you don't have one yet."
+            "Login details are incorrect. Check your login details or create a new account if you don't have one."
           );
+        } else if (err.toString().includes("500")) {
+          setErrorMessage("A Server error occured!");
         } else {
-          setErrorMessage("An unknown error occured");
+          setErrorMessage("An unknown error occured!");
         }
       });
   };
   return (
-    <div className="container mb-3">
+    <div
+      className="container mb-3"
+      style={loading ? { pointerEvents: "none" } : { pointerEvents: "all" }}
+    >
       <h1 className="display-5 text-center" style={{ marginTop: "2rem" }}>
         Log In
       </h1>
@@ -120,6 +135,20 @@ const Login = ({ history }) => {
           </MDBModalFooter>
         </div>
       </MDBModal>
+      {loading && (
+        <MDBModal
+          isOpen={loaderModal}
+          toggle={toggleLoaderModal}
+          size="sm"
+          centered
+          className="h-100"
+        >
+          <MDBModalBody className="text-center">
+            <div className="spinner-border text-primary mt-4 mb-4"></div>
+          </MDBModalBody>
+          <div className="flex-center"></div>
+        </MDBModal>
+      )}
     </div>
   );
 };

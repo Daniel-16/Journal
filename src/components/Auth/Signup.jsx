@@ -5,7 +5,7 @@ import SignInImage from "../../Images/sign-in.png";
 import Axios from "axios";
 // import { CredentialsContext } from "../../App";
 
-const Auth = ({ history }) => {
+const Signup = ({ history }) => {
   const [toggleIcon, setToggledIcon] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [username, setName] = useState("");
@@ -13,12 +13,17 @@ const Auth = ({ history }) => {
   const [password, setPassword] = useState("");
   const [errorModal, setErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [loaderModal, setLoaderModal] = useState(false);
   const toggle = () => {
     setToggledIcon(!toggleIcon);
     setShowPassword(!showPassword);
   };
   const toggleModal = () => {
     setErrorModal(!errorModal);
+  };
+  const toggleLoaderModal = () => {
+    setLoaderModal(!loaderModal);
   };
   const handleName = (e) => {
     setName(e.target.value);
@@ -40,7 +45,12 @@ const Auth = ({ history }) => {
         console.log(res.data);
         localStorage.setItem("authToken", res.data.token);
         localStorage.setItem("user", res.data.user.fullname);
-        history.push("/home");
+        // history.push("/home");
+        setLoading(true);
+        toggleLoaderModal();
+        setTimeout(() => {
+          history.push("/home");
+        }, 3000);
       })
       .catch((err) => {
         console.error(err);
@@ -48,25 +58,28 @@ const Auth = ({ history }) => {
         if (err.toString().includes("400")) {
           console.log("Bad Request");
           setErrorMessage(
-            "An error occured while creating an account. Perhaps you have an account, log in to continue"
+            "An error occured while creating an account. Make sure the information given is correct or login if you already have an account."
           );
         } else if (err.toString().includes("500")) {
-          setErrorMessage("Server Error");
+          setErrorMessage("A Server error occured.");
         } else {
-          setErrorMessage("An unknown error occured");
+          setErrorMessage("An unknown error occured.");
         }
+        localStorage.clear();
       });
-    // console.log([username, email, password]);
-    // setName("");
-    // setEmail("");
-    // setPassword("");
   };
 
   const centerForm = {
     margin: "auto",
   };
   return (
-    <div className="container mb-3" style={centerForm}>
+    <div
+      className="container mb-3"
+      style={
+        (centerForm,
+        loading ? { pointerEvents: "none" } : { pointerEvents: "all" })
+      }
+    >
       <h1 className="display-5 text-center" style={{ marginTop: "2rem" }}>
         Create Account
       </h1>
@@ -155,8 +168,21 @@ const Auth = ({ history }) => {
           </MDBModalFooter>
         </div>
       </MDBModal>
+      {loading && (
+        <MDBModal
+          isOpen={loaderModal}
+          toggle={toggleLoaderModal}
+          size="sm"
+          centered
+        >
+          <MDBModalBody className="text-center">
+            <div className="spinner-border text-primary mt-4 mb-4"></div>
+          </MDBModalBody>
+          <div className="flex-center"></div>
+        </MDBModal>
+      )}
     </div>
   );
 };
 
-export default Auth;
+export default Signup;
