@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import AddnotesImg from "../Images/add-notes.png";
 import Axios from "axios";
+// import { CredentialsContext } from "../App";
 
 const Home = ({ history }) => {
   const [error, setError] = useState("");
   const [privateData, setPrivateData] = useState("");
-  const [username, setUsername] = useState("");
+  // const [credentials] = useContext(CredentialsContext);
+  const [username] = useState(localStorage.getItem("user"));
   useEffect(() => {
     if (!localStorage.getItem("authToken")) {
       history.push("/login");
@@ -19,31 +21,18 @@ const Home = ({ history }) => {
       };
       Axios.get("http://localhost:5000/api/private", config)
         .then((res) => {
-          setPrivateData(res.data.data);
+          setPrivateData("Welcome! You can now add your daily Journals");
         })
         .catch((err) => {
           localStorage.removeItem("authToken");
+          history.push("/login");
           setError(
             "You are not authorized to use this route. Please login to access this page"
           );
           console.error(err);
         });
     };
-
-    const fetchUser = (id) => {
-      Axios.get(`http://localhost:5000/api/auth/getUser/${id}`)
-        .then((res) => {
-          console.log(res);
-          const userData = res.data.user;
-          setUsername(userData.fullname);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    };
-
     fetchData();
-    fetchUser("6217f626da7cc85598fd5a9b");
   }, [history]);
 
   return error ? (
@@ -52,45 +41,50 @@ const Home = ({ history }) => {
     </div>
   ) : (
     <div>
-      <div
-        style={{
-          background: "#6C63FF",
-          color: "white",
-          width: "40px",
-          height: "40px",
-          textAlign: "center",
-          borderRadius: "50%",
-          display: "flex",
-          float: "right",
-          marginBottom: "2rem",
-          marginTop: "10px",
-          marginRight: 20,
-        }}
-      >
-        <h5 style={{ textAlign: "center", margin: "auto" }}>
-          {username.charAt(0).toUpperCase()}
-        </h5>
-      </div>
-      <div className="container">
-        <br />
-        <div style={{ marginTop: "2rem" }}>
-          <h2 className="font-weight-bold">Hello {username}!</h2>
-          {/* <input
-          className="form-control shadow-none"
-          type="search"
-          placeholder="Search"
-          style={{ backgroundColor: "lightgrey", border: "none" }}
-        /> */}
+      <nav className="navbar navbar-light bg-white shadow-none">
+        <h4 className="nav-brand mt-2 d-flex justify-content-start font-weight-bold">
+          Hello {username}!
+        </h4>
+        <div className="justify-content-end">
+          <div
+            style={{
+              background: "#6C63FF",
+              color: "white",
+              width: "40px",
+              height: "40px",
+              textAlign: "center",
+              padding: 7,
+              borderRadius: "50%",
+              /*display: "flex",
+              float: "right",
+              marginBottom: "2rem",
+              marginTop: "10px",
+              marginRight: 20,
+              */
+            }}
+          >
+            <h5
+              style={{
+                textAlign: "center",
+                margin: "auto",
+                fontWeight: "",
+                fontSize: 20,
+              }}
+            >
+              {username.charAt(0).toUpperCase()}
+            </h5>
+          </div>
         </div>
-        {privateData}
-        <img
-          className="img-fluid w-100 h-100"
-          src={AddnotesImg}
-          alt="No notes"
-        />
-        <p className="text-center">
+      </nav>
+      <br />
+      <div className="container">
+        <p className="text-center lead">{privateData}</p>
+        <div className="flex-center">
+          <img className="img-fluid" src={AddnotesImg} alt="No notes" />
+        </div>
+        <h5 className="text-center">
           No record! Records of daily activities would show here once created.
-        </p>
+        </h5>
         <button
           className="btn"
           style={{

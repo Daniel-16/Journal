@@ -1,25 +1,28 @@
 import React, { useState } from "react";
-import { MDBInput } from "mdbreact";
+import { MDBInput, MDBModal, MDBModalBody, MDBModalFooter } from "mdbreact";
 import { Link } from "react-router-dom";
 import SignInImage from "../../Images/sign-in.png";
 import Axios from "axios";
+// import { CredentialsContext } from "../../App";
 
 const Auth = ({ history }) => {
   const [toggleIcon, setToggledIcon] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [name, setName] = useState("");
+  const [username, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorModal, setErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const toggle = () => {
     setToggledIcon(!toggleIcon);
     setShowPassword(!showPassword);
   };
+  const toggleModal = () => {
+    setErrorModal(!errorModal);
+  };
   const handleName = (e) => {
     setName(e.target.value);
   };
-  // const handleLastname = (e) => {
-  //   setLastname(e.target.value);
-  // };
   const handleEmail = (e) => {
     setEmail(e.target.value);
   };
@@ -29,39 +32,36 @@ const Auth = ({ history }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     Axios.post("http://localhost:5000/api/auth/register", {
-      fullname: name,
+      fullname: username,
       email,
       password,
     })
       .then((res) => {
         console.log(res.data);
         localStorage.setItem("authToken", res.data.token);
+        localStorage.setItem("user", res.data.user.fullname);
         history.push("/home");
       })
       .catch((err) => {
         console.error(err);
+        toggleModal();
+        if (err.toString().includes("400")) {
+          console.log("Bad Request");
+          setErrorMessage(
+            "An error occured while creating an account. Perhaps you have an account, log in to continue"
+          );
+        } else if (err.toString().includes("500")) {
+          setErrorMessage("Server Error");
+        } else {
+          setErrorMessage("An unknown error occured");
+        }
       });
-    console.log([name, email, password]);
-    setName("");
-    setEmail("");
-    setPassword("");
+    // console.log([username, email, password]);
+    // setName("");
+    // setEmail("");
+    // setPassword("");
   };
 
-  // try {
-  //   const { data } = await axios.post(
-  //     "http://localhost:5000/api/auth/register",
-  //     {
-  //       fullname: name,
-  //       email,
-  //       password,
-  //     },
-  //     config
-  //   );
-  //   localStorage.setItem("authToken", data.token);
-  //   history.push("/home");
-  // } catch (error) {
-  //   console.log(error.response.data.error);
-  // }
   const centerForm = {
     margin: "auto",
   };
@@ -83,7 +83,7 @@ const Auth = ({ history }) => {
           type="text"
           onChange={handleName}
           required
-          value={name}
+          value={username}
         />
         {/* <MDBInput
               label="Lastname"
@@ -142,6 +142,19 @@ const Auth = ({ history }) => {
           </Link>
         </small>
       </div>
+      <MDBModal isOpen={errorModal} toggle={toggleModal} size="sm" centered>
+        {/* <MDBModalHeader toggle={toggleModal}> */}
+        <h5 className="modal-header text-center">Error Creating Account!</h5>
+        {/* </MDBModalHeader> */}
+        <MDBModalBody className="text-center">{errorMessage}</MDBModalBody>
+        <div className="flex-center">
+          <MDBModalFooter>
+            <button className="btn btn-danger btn-sm" onClick={toggleModal}>
+              Close
+            </button>
+          </MDBModalFooter>
+        </div>
+      </MDBModal>
     </div>
   );
 };

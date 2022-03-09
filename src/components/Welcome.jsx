@@ -22,22 +22,22 @@ const Welcome = () => {
               Just share a little more about yourself and you are all set to use
               Journal.
             </p>
-            {/* <div className="flex-center"> */}
-            <Link to="/signup">
-              <button
-                className="btn shadow-none"
-                style={{
-                  borderRadius: 5,
-                  backgroundColor: "#6C63FF",
-                  color: "white",
-                  textTransform: "none",
-                  fontSize: 17,
-                }}
-              >
-                Get started <span className="fa fa-arrow-right ml-2"></span>
-              </button>
-            </Link>
-            {/* </div> */}
+            <div className="text-center">
+              <Link to="/signup">
+                <button
+                  className="btn shadow-none"
+                  style={{
+                    borderRadius: 5,
+                    backgroundColor: "#6C63FF",
+                    color: "white",
+                    textTransform: "none",
+                    fontSize: 17,
+                  }}
+                >
+                  Get started <span className="fa fa-arrow-right ml-2"></span>
+                </button>
+              </Link>
+            </div>
           </div>
           <div className="col-lg-5 col-sm">
             <img
