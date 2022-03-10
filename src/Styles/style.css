@@ -1,0 +1,26 @@
+#title::placeholder {
+    color: grey;
+    font-size: 30px;
+    /* font-weight: bold; */
+}
+#title {
+    border: none;
+    box-shadow: none;
+    resize: none;
+    font-size: 30px;
+}
+#textarea::placeholder {
+    color: grey;
+}
+#textarea {
+    border: none;
+    box-shadow: none;
+    resize: none;
+    position: relative;
+    bottom: 1rem;
+    background-image: url("../Images/undraw_Noted_re_c5wv_1.png");
+    background-repeat: no-repeat;
+    /* background-blend-mode: luminosity; */
+    background-size: contain;
+    background-position: center;
+}

@@ -5,6 +5,7 @@ import Signup from "./components/Auth/Signup";
 import Login from "./components/Auth/Login";
 import Home from "./components/Home";
 import PrivateRoute from "./Route/privateRoute";
+import Journals from "./components/Journals";
 
 export const CredentialsContext = createContext();
 
@@ -15,11 +16,11 @@ const App = () => {
       <CredentialsContext.Provider value={credentials}>
         <Router>
           <Switch>
-            <PrivateRoute exact path="/home" component={Home} />
+            <PrivateRoute path="/home" exact component={Home} />
             <Route path="/" exact component={Welcome} />
             <Route path="/signup" component={Signup} />
             <Route path="/login" component={Login} />
-            {/* <Route path="/home" component={Home} /> */}
+            <Route path="/journals" component={Journals} />
           </Switch>
         </Router>
       </CredentialsContext.Provider>
