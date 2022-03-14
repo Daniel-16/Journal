@@ -41,7 +41,6 @@ const Signup = ({ history }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     //Post the form fields to the database
     Axios.post("http://localhost:5000/api/auth/register", {
       fullname: username,
