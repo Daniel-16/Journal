@@ -3,6 +3,7 @@ import AddnotesImg from "../Images/add-notes.png";
 import Axios from "axios";
 // import { CredentialsContext } from "../App";
 import Header from "./Header";
+import { MDBModal, MDBModalBody } from "mdbreact";
 
 const Home = ({ history }) => {
   const [error, setError] = useState("");
@@ -10,7 +11,24 @@ const Home = ({ history }) => {
   // const [credentials] = useContext(CredentialsContext);
   const [username] = useState(localStorage.getItem("user"));
   const [journals, setJournals] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loaderModal, setLoaderModal] = useState(true);
+  const toggleLoaderModal = () => {
+    setLoaderModal(false);
+  };
+  const deleteJournal = () => {
+    Axios.delete(
+      `http://localhost:5000/api/auth/deleteJournal/${localStorage.getItem(
+        "userId"
+      )}/${journals._id}`
+    )
+      .then((res) => {
+        console.log("success");
+      })
+      .catch((err) => {
+        console.error("Couldn't delete");
+      });
+  };
   useEffect(() => {
     //Clears local storage if user is not authorized
     if (!localStorage.getItem("authToken")) {
@@ -26,14 +44,15 @@ const Home = ({ history }) => {
       };
       Axios.get("http://localhost:5000/api/private", config)
         .then(() => {
-          setPrivateData("Welcome! You can now add your daily Journals");
-          setLoading(false);
+          setPrivateData(
+            "Welcome! You can now add journals of your daily activities by clicking on the plus button at the bottom of your screen."
+          );
         })
         .catch((err) => {
           localStorage.clear();
           history.push("/login");
           setError(
-            "You are not authorized to use this route. Please login to access this page"
+            "You are not authorized to use this route. Redirecting you to the login page"
           );
           console.error(err);
         });
@@ -44,11 +63,14 @@ const Home = ({ history }) => {
       )}`
     )
       .then((res) => {
-        setLoading(true);
         res.data.journal.map((journals) => {
           return journals.journals.map((data) => setJournals(data));
         });
+        console.log(res.data.journal);
+
         setLoading(false);
+        setLoaderModal(false);
+        toggleLoaderModal();
       })
       .catch((err) => {
         console.error(err);
@@ -60,16 +82,26 @@ const Home = ({ history }) => {
   const handleButtonClick = () => {
     history.push("/journals");
   };
-  if (loading) {
-    return <div className="spinner-border text-primary"></div>;
+  if (loading && loaderModal) {
+    return (
+      <MDBModal
+        isOpen={loaderModal}
+        toggle={toggleLoaderModal}
+        size="sm"
+        centered
+      >
+        <MDBModalBody className="text-center">
+          <div className="spinner-border text-primary mt-4 mb-4"></div>
+        </MDBModalBody>
+      </MDBModal>
+    );
   } else if (error) {
     return (
       <div className="container">
         <h3>{error}</h3>
       </div>
     );
-  }
-  if (journals.length <= 0) {
+  } else if (journals.length <= 0) {
     return (
       <div>
         <Header username={username} />
@@ -112,9 +144,33 @@ const Home = ({ history }) => {
         <Header username={username} />
         <div className="card">
           <div className="card-body">
-            <h3 className="card-title">{journals.title}</h3>
+            {journals}
+            <button onClick={deleteJournal} className="btn btn-danger">
+              Delete
+            </button>
           </div>
         </div>
+        <button
+          className="btn"
+          style={{
+            borderRadius: "20%",
+            color: "white",
+            backgroundColor: "#6C63FF",
+            width: 57,
+            height: 57,
+            padding: 10,
+            float: "right",
+            position: "fixed",
+            bottom: 0,
+            right: 0,
+            marginBottom: "20px",
+            marginRight: "20px",
+            fontSize: 25,
+          }}
+          onClick={handleButtonClick}
+        >
+          <span className="fa fa-plus"></span>
+        </button>
       </div>
     );
   }

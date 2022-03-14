@@ -51,6 +51,7 @@ const Signup = ({ history }) => {
         console.log(res.data);
         localStorage.setItem("authToken", res.data.token);
         localStorage.setItem("user", res.data.user.fullname);
+        localStorage.setItem("userId", res.data.user._id);
         setLoading(true);
         toggleLoaderModal();
         setTimeout(() => {
@@ -180,7 +181,6 @@ const Signup = ({ history }) => {
           <MDBModalBody className="text-center">
             <div className="spinner-border text-primary mt-4 mb-4"></div>
           </MDBModalBody>
-          <div className="flex-center"></div>
         </MDBModal>
       )}
     </div>
