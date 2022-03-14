@@ -1,9 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../Styles/style.css";
+import Axios from "axios";
 
 const Journals = ({ history }) => {
   const [title, setTitle] = useState("");
   const [textfield, setTextfield] = useState("");
+
+  useEffect(() => {
+    if (!localStorage.getItem("authToken")) {
+      history.push("/login");
+    }
+
+    const fetchData = () => {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      };
+      Axios.get("http://localhost:5000/api/private", config)
+        .then(() => {
+          return;
+        })
+        .catch((err) => {
+          localStorage.clear();
+          history.push("/login");
+          console.error(err);
+        });
+    };
+    fetchData();
+  }, [history]);
 
   //Handle state change functions
   const handleSubmit = (e) => {
@@ -28,7 +53,11 @@ const Journals = ({ history }) => {
           <div className="container">
             <span
               className="fa fa-times"
-              style={{ fontSize: 30, color: "grey", cursor: "pointer" }}
+              style={{
+                fontSize: 30,
+                color: "grey",
+                cursor: "pointer",
+              }}
               onClick={cancel}
             ></span>
             <button

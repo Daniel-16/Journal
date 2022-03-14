@@ -42,6 +42,7 @@ const Login = ({ history }) => {
         console.log(res.data);
         localStorage.setItem("user", res.data.user.fullname);
         localStorage.setItem("authToken", res.data.token);
+        localStorage.setItem("userId", res.data.user._id);
         setLoading(true);
         toggleLoaderModal();
         setTimeout(() => {
