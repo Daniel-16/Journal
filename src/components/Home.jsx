@@ -16,19 +16,7 @@ const Home = ({ history }) => {
   const toggleLoaderModal = () => {
     setLoaderModal(false);
   };
-  const deleteJournal = () => {
-    Axios.delete(
-      `http://localhost:5000/api/auth/deleteJournal/${localStorage.getItem(
-        "userId"
-      )}/${journals._id}`
-    )
-      .then((res) => {
-        console.log("success");
-      })
-      .catch((err) => {
-        console.error("Couldn't delete");
-      });
-  };
+
   useEffect(() => {
     //Clears local storage if user is not authorized
     if (!localStorage.getItem("authToken")) {
@@ -63,11 +51,11 @@ const Home = ({ history }) => {
       )}`
     )
       .then((res) => {
-        res.data.journal.map((journals) => {
-          return journals.journals.map((data) => setJournals(data));
-        });
-        console.log(res.data.journal);
-
+        // res.data.journal.map((journals) => {
+        //   return journals.journals.map((data) => setJournals(data));
+        // });
+        setJournals(res.data.journal);
+        console.log(res.data.journal.map((data) => data.journals));
         setLoading(false);
         setLoaderModal(false);
         toggleLoaderModal();
@@ -78,6 +66,21 @@ const Home = ({ history }) => {
       });
     fetchData();
   }, [history]);
+
+  const deleteJournal = (id) => {
+    Axios.delete(
+      `http://localhost:5000/api/auth/deleteJournal/${localStorage.getItem(
+        "userId"
+      )}/${id}`
+    )
+      .then(() => {
+        console.log("success");
+        document.location.reload();
+      })
+      .catch(() => {
+        console.error("Couldn't delete");
+      });
+  };
 
   const handleButtonClick = () => {
     history.push("/journals");
@@ -101,7 +104,7 @@ const Home = ({ history }) => {
         <h3>{error}</h3>
       </div>
     );
-  } else if (journals.length <= 0) {
+  } else if (journals.map((data) => data.journals.length) <= 0) {
     return (
       <div>
         <Header username={username} />
@@ -142,14 +145,24 @@ const Home = ({ history }) => {
     return (
       <div className="container">
         <Header username={username} />
-        <div className="card">
-          <div className="card-body">
-            {journals}
-            <button onClick={deleteJournal} className="btn btn-danger">
-              Delete
-            </button>
-          </div>
-        </div>
+        {journals.map((data) =>
+          data.journals.map((user) => (
+            <div className="card" key={user._id}>
+              <div className="card-body">
+                <h4 className="card-title">{user.title}</h4>
+                <p className="card-text text-center">{user.textfield}</p>
+                <button
+                  onClick={() => {
+                    deleteJournal(user._id);
+                  }}
+                  className="btn btn-danger"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))
+        )}
         <button
           className="btn"
           style={{
