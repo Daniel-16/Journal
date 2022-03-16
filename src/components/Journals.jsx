@@ -34,8 +34,19 @@ const Journals = ({ history }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log([title, textfield]);
-    setTitle("");
-    setTextfield("");
+    Axios.post(
+      `http://localhost:5000/api/auth/createJournal/${localStorage.getItem(
+        "userId"
+      )}`,
+      { title, textfield }
+    )
+      .then((res) => {
+        console.log(res);
+        history.push("/home")
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
   const handleTitle = (e) => {
     setTitle(e.target.value);

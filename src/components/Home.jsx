@@ -75,7 +75,7 @@ const Home = ({ history }) => {
     )
       .then(() => {
         console.log("success");
-        document.location.reload();
+        history.push("/home");
       })
       .catch(() => {
         console.error("Couldn't delete");
@@ -104,7 +104,7 @@ const Home = ({ history }) => {
         <h3>{error}</h3>
       </div>
     );
-  } else if (journals.map((data) => data.journals.length) <= 0) {
+  } else if (journals.map((userJournal) => userJournal).length <= 0) {
     return (
       <div>
         <Header username={username} />
