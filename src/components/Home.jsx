@@ -4,6 +4,7 @@ import Axios from "axios";
 // import { CredentialsContext } from "../App";
 import Header from "./Header";
 import { MDBModal, MDBModalBody } from "mdbreact";
+// import Modal from "./Modal";
 
 const Home = ({ history }) => {
   const [error, setError] = useState("");
@@ -13,8 +14,16 @@ const Home = ({ history }) => {
   const [journals, setJournals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loaderModal, setLoaderModal] = useState(true);
+  // const [deleteModal, setDeleteModal] = useState(false);
   const toggleLoaderModal = () => {
     setLoaderModal(false);
+  };
+  // const toggleDeleteModal = () => {
+  //   setDeleteModal(!deleteModal);
+  // };
+  const cardStyles = {
+    display: "flex",
+    flexWrap: "wrap",
   };
 
   useEffect(() => {
@@ -75,7 +84,7 @@ const Home = ({ history }) => {
     )
       .then(() => {
         console.log("success");
-        history.push("/home");
+        document.location.reload();
       })
       .catch(() => {
         console.error("Couldn't delete");
@@ -104,7 +113,7 @@ const Home = ({ history }) => {
         <h3>{error}</h3>
       </div>
     );
-  } else if (journals.map((userJournal) => userJournal).length <= 0) {
+  } else if (journals.map((data) => data.journals.length) <= 0) {
     return (
       <div>
         <Header username={username} />
@@ -145,24 +154,40 @@ const Home = ({ history }) => {
     return (
       <div className="container">
         <Header username={username} />
-        {journals.map((data) =>
-          data.journals.map((user) => (
-            <div className="card" key={user._id}>
-              <div className="card-body">
-                <h4 className="card-title">{user.title}</h4>
-                <p className="card-text text-center">{user.textfield}</p>
-                <button
-                  onClick={() => {
-                    deleteJournal(user._id);
-                  }}
-                  className="btn btn-danger"
+        <div className="row mt-2" style={cardStyles}>
+          {journals.map((data) =>
+            data.journals.map((user) => (
+              <div className="col" key={user._id}>
+                <div
+                  className="card mb-3 shadow-sm border"
+                  style={{ cursor: "pointer" }}
                 >
-                  Delete
-                </button>
+                  <div className="card-body">
+                    <h5 className="card-title">{user.title}</h5>
+                    <p className="card-text">{user.textfield}</p>
+                    <button
+                      onClick={() => {
+                        deleteJournal(user._id);
+                      }}
+                      className="btn btn-danger float-right"
+                      style={{
+                        borderRadius: "50%",
+                        width: 35,
+                        height: 35,
+                        border: "none",
+                        fontSize: 15,
+                        padding: 5,
+                        textAlign: "center",
+                      }}
+                    >
+                      <i className="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))
-        )}
+            ))
+          )}
+        </div>
         <button
           className="btn"
           style={{
