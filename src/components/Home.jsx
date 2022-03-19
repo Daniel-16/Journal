@@ -4,7 +4,8 @@ import Axios from "axios";
 // import { CredentialsContext } from "../App";
 import Header from "./Header";
 import { MDBModal, MDBModalBody } from "mdbreact";
-// import Modal from "./Modal";
+import "../Styles/flex.css";
+// import { sort } from "fast-sort";
 
 const Home = ({ history }) => {
   const [error, setError] = useState("");
@@ -64,6 +65,12 @@ const Home = ({ history }) => {
         //   return journals.journals.map((data) => setJournals(data));
         // });
         setJournals(res.data.journal);
+        const newJournal = res.data.journal.map((data) =>
+          data.journals
+            .sort((a, b) => (a.dateOfCreation < b.dateOfCreation ? 1 : -1))
+            .map((user) => user.dateOfCreation)
+        );
+        console.log(newJournal);
         console.log(res.data.journal.map((data) => data.journals));
         setLoading(false);
         setLoaderModal(false);
@@ -151,37 +158,41 @@ const Home = ({ history }) => {
       </div>
     );
   } else {
+    journals.map((data) =>
+      data.journals
+        .sort((a, b) => (a.dateOfCreaion < b.dateOfCreation ? 1 : -1))
+        .map((user) => user.dateOfCreation)
+    );
     return (
       <div className="container">
         <Header username={username} />
+        <input
+          className="form-control mt-2 shadow-none"
+          placeholder="Search your journals"
+          style={{ backgroundColor: "lightgrey", border: "none" }}
+        />
+        <p className="lead ml-3">Your Journals</p>
         <div className="row mt-2" style={cardStyles}>
           {journals.map((data) =>
             data.journals.map((user) => (
-              <div className="col" key={user._id}>
+              <div className="col" key={user._id} style={{ flex: "35%" }}>
                 <div
                   className="card mb-3 shadow-sm border"
                   style={{ cursor: "pointer" }}
                 >
                   <div className="card-body">
-                    <h5 className="card-title">{user.title}</h5>
-                    <p className="card-text">{user.textfield}</p>
-                    <button
+                    <span
+                      className="fa fa-times text-muted float-right ml-4"
                       onClick={() => {
                         deleteJournal(user._id);
                       }}
-                      className="btn btn-danger float-right"
-                      style={{
-                        borderRadius: "50%",
-                        width: 35,
-                        height: 35,
-                        border: "none",
-                        fontSize: 15,
-                        padding: 5,
-                        textAlign: "center",
-                      }}
-                    >
-                      <i className="fa fa-trash"></i>
-                    </button>
+                      style={{ cursor: "pointer" }}
+                    ></span>
+                    <h5 className="card-title">{user.title}</h5>
+                    <p className="card-text">{user.textfield}</p>
+                    <small className="text-muted">
+                      {new Date(user.dateOfCreation).toDateString()}
+                    </small>
                   </div>
                 </div>
               </div>
