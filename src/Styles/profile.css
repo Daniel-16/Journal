@@ -1,0 +1,4 @@
+#userProfiles:hover {
+    background-color: lightgrey;
+    transition: 1.2s;
+}

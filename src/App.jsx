@@ -6,6 +6,7 @@ import Login from "./components/Auth/Login";
 import Home from "./components/Home";
 import PrivateRoute from "./Route/privateRoute";
 import Journals from "./components/Journals";
+import UserProfile from "./components/UserProfile";
 
 export const CredentialsContext = createContext();
 
@@ -21,6 +22,7 @@ const App = () => {
             <Route path="/signup" component={Signup} />
             <Route path="/login" component={Login} />
             <Route path="/journals" component={Journals} />
+            <Route path="/profile" component={UserProfile} />
           </Switch>
         </Router>
       </CredentialsContext.Provider>

@@ -5,7 +5,8 @@ import Axios from "axios";
 import Header from "./Header";
 import { MDBModal, MDBModalBody } from "mdbreact";
 import "../Styles/flex.css";
-// import { sort } from "fast-sort";
+import UserJournals from "./UserJournals";
+import Button from "./Button";
 
 const Home = ({ history }) => {
   const [error, setError] = useState("");
@@ -15,7 +16,7 @@ const Home = ({ history }) => {
   const [journals, setJournals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loaderModal, setLoaderModal] = useState(true);
-  // const [deleteModal, setDeleteModal] = useState(false);
+  const [search, setSearch] = useState("");
   const toggleLoaderModal = () => {
     setLoaderModal(false);
   };
@@ -61,16 +62,13 @@ const Home = ({ history }) => {
       )}`
     )
       .then((res) => {
-        // res.data.journal.map((journals) => {
-        //   return journals.journals.map((data) => setJournals(data));
-        // });
         setJournals(res.data.journal);
-        const newJournal = res.data.journal.map((data) =>
+        res.data.journal.map((data) =>
           data.journals
-            .sort((a, b) => (a.dateOfCreation < b.dateOfCreation ? 1 : -1))
+            .sort((a, b) => (a.dateOfCreation < b.dateOfCreation ? -1 : -1))
             .map((user) => user.dateOfCreation)
         );
-        console.log(newJournal);
+        // console.log(newJournal);
         console.log(res.data.journal.map((data) => data.journals));
         setLoading(false);
         setLoaderModal(false);
@@ -133,27 +131,7 @@ const Home = ({ history }) => {
           <h5 className="text-center">
             No record! Records of daily activities would show here once created.
           </h5>
-          <button
-            className="btn"
-            style={{
-              borderRadius: "20%",
-              color: "white",
-              backgroundColor: "#6C63FF",
-              width: 57,
-              height: 57,
-              padding: 10,
-              float: "right",
-              position: "fixed",
-              bottom: 0,
-              right: 0,
-              marginBottom: "20px",
-              marginRight: "20px",
-              fontSize: 25,
-            }}
-            onClick={handleButtonClick}
-          >
-            <span className="fa fa-plus"></span>
-          </button>
+          <Button handleButtonClick={handleButtonClick} />
         </div>
       </div>
     );
@@ -166,60 +144,27 @@ const Home = ({ history }) => {
     return (
       <div className="container">
         <Header username={username} />
+        <span
+          className="fa fa-search text-muted"
+          style={{ position: "relative", top: 39, left: 10 }}
+        ></span>
         <input
           className="form-control mt-2 shadow-none"
           placeholder="Search your journals"
           style={{ backgroundColor: "lightgrey", border: "none" }}
+          type="search"
+          id="searchInput"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
         <p className="lead ml-3">Your Journals</p>
-        <div className="row mt-2" style={cardStyles}>
-          {journals.map((data) =>
-            data.journals.map((user) => (
-              <div className="col" key={user._id} style={{ flex: "35%" }}>
-                <div
-                  className="card mb-3 shadow-sm border"
-                  style={{ cursor: "pointer" }}
-                >
-                  <div className="card-body">
-                    <span
-                      className="fa fa-times text-muted float-right ml-4"
-                      onClick={() => {
-                        deleteJournal(user._id);
-                      }}
-                      style={{ cursor: "pointer" }}
-                    ></span>
-                    <h5 className="card-title">{user.title}</h5>
-                    <p className="card-text">{user.textfield}</p>
-                    <small className="text-muted">
-                      {new Date(user.dateOfCreation).toDateString()}
-                    </small>
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-        <button
-          className="btn"
-          style={{
-            borderRadius: "20%",
-            color: "white",
-            backgroundColor: "#6C63FF",
-            width: 57,
-            height: 57,
-            padding: 10,
-            float: "right",
-            position: "fixed",
-            bottom: 0,
-            right: 0,
-            marginBottom: "20px",
-            marginRight: "20px",
-            fontSize: 25,
-          }}
-          onClick={handleButtonClick}
-        >
-          <span className="fa fa-plus"></span>
-        </button>
+        <UserJournals
+          journals={journals}
+          search={search}
+          deleteJournal={deleteJournal}
+          cardStyles={cardStyles}
+        />
+        <Button handleButtonClick={handleButtonClick} />
       </div>
     );
   }
