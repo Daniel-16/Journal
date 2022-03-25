@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const UserJournals = ({ journals, search, deleteJournal, cardStyles }) => {
   return (
@@ -29,11 +30,15 @@ const UserJournals = ({ journals, search, deleteJournal, cardStyles }) => {
                     }}
                     style={{ cursor: "pointer" }}
                   ></span>
-                  <h5 className="card-title">{user.title}</h5>
-                  <p className="card-text">{user.textfield}</p>
-                  <small className="text-muted">
-                    {new Date(user.dateOfCreation).toDateString()}
-                  </small>
+                  <Link to="/updatejournal">
+                    <h5 className="card-title" style={{ color: "#283739" }}>
+                      {user.title}
+                    </h5>
+                    <p className="card-text">{user.textfield}</p>
+                    <small className="text-muted">
+                      {new Date(user.dateOfCreation).toDateString()}
+                    </small>
+                  </Link>
                 </div>
               </div>
             </div>

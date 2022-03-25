@@ -1,7 +1,7 @@
 import React from "react";
 import { MDBModal, MDBModalBody, MDBModalFooter } from "mdbreact";
 
-const Modal = ({ toggleDeleteModal, deleteModal, deleteJournal }) => {
+const Modal = ({ deleteModal, toggleDeleteModal, deleteAccount }) => {
   return (
     <MDBModal
       isOpen={deleteModal}
@@ -9,19 +9,28 @@ const Modal = ({ toggleDeleteModal, deleteModal, deleteJournal }) => {
       size="sm"
       centered
     >
-      <h5 className="modal-header text-center">Delete Journal</h5>
+      <h5 className="modal-header text-center">Delete Account</h5>
       <MDBModalBody className="text-center">
-        Are you sure you want to delete this journal?
+        Are you sure you want to delete this account?
       </MDBModalBody>
       <div className="flex-center">
         <MDBModalFooter>
-          <button className="btn btn-danger btn-sm" onClick={deleteJournal()}>
+          <button
+            className="btn btn-danger btn-sm"
+            onClick={deleteAccount}
+            style={{ textTransform: "none", fontSize: 13 }}
+          >
             Yes
           </button>
           <button
             className="btn btn-sm"
             onClick={toggleDeleteModal}
-            style={{ backgroundColor: "#6C63FF", color: "white" }}
+            style={{
+              backgroundColor: "#6C63FF",
+              color: "white",
+              textTransform: "none",
+              fontSize: 13,
+            }}
           >
             No
           </button>

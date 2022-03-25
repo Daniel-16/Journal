@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../Styles/profile.css";
 import Axios from "axios";
+import Modal from "./Modal";
 
 const UserProfile = ({ history }) => {
+  const [deleteModal, setDeleteModal] = useState(false);
   useEffect(() => {
     if (!localStorage.getItem("authToken")) {
       history.push("/login");
@@ -23,6 +25,9 @@ const UserProfile = ({ history }) => {
       .catch((err) => {
         console.error(err);
       });
+  };
+  const toggleDeleteModal = () => {
+    setDeleteModal(!deleteModal);
   };
   return (
     <div>
@@ -92,7 +97,7 @@ const UserProfile = ({ history }) => {
             <i className="fa fa-angle-right float-right"></i>
           </button>
           <button
-            onClick={deleteAccount}
+            onClick={toggleDeleteModal}
             className="btn w-100 shadow-none"
             id="userProfiles"
             style={{
@@ -106,6 +111,11 @@ const UserProfile = ({ history }) => {
             <i className="fa fa-trash mr-2"></i>Delete account
             <i className="fa fa-angle-right float-right"></i>
           </button>
+          <Modal
+            deleteModal={deleteModal}
+            toggleDeleteModal={toggleDeleteModal}
+            deleteAccount={deleteAccount}
+          />
           <button
             onClick={Logout}
             className="btn w-100 shadow-none"
