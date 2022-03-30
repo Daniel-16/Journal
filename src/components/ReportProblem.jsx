@@ -20,7 +20,7 @@ const ReportProblem = () => {
         <hr />
         <p className="text-center">
           Email support team by clicking on the link{" "}
-          <a href="mailto:danieloloruntoba55@gmail.com">Support team</a>
+          <a href="mailto:journalwebapp19@gmail.com">Support team</a>
         </p>
         {/* <h3 className="text-center">Describe your problem</h3> */}
         {/* Todo: Create an describe problem field */}

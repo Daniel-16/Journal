@@ -119,7 +119,7 @@ const Privacy = ({ history }) => {
               rel="external noreferrer nofollow noopener"
               target="_blank"
             >
-              https://journal.netlify.app.com
+              https://journal19.netlify.app
             </a>
           </p>
         </li>
