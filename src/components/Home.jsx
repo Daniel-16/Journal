@@ -120,7 +120,7 @@ const Home = ({ history }) => {
     );
   } else if (journals.map((data) => data.journals.length) <= 0) {
     return (
-      <div>
+      <div className="container">
         <Header username={username} />
         <br />
         <div className="container">
