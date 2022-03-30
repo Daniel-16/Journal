@@ -3,9 +3,10 @@ import "../Styles/style.css";
 import Axios from "axios";
 
 const UpdateJournals = ({ history }) => {
-  const [title, setTitle] = useState("");
-  const [textfield, setTextfield] = useState("");
-
+  const [title, setTitle] = useState(localStorage.getItem("userTitle"));
+  const [textfield, setTextfield] = useState(
+    localStorage.getItem("userTextfield")
+  );
   useEffect(() => {
     if (!localStorage.getItem("authToken")) {
       history.push("/login");
@@ -34,10 +35,10 @@ const UpdateJournals = ({ history }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log([title, textfield]);
-    Axios.post(
-      `http://localhost:5000/api/auth/createJournal/${localStorage.getItem(
+    Axios.put(
+      `http://localhost:5000/api/auth/updateJournal/${localStorage.getItem(
         "userId"
-      )}`,
+      )}/${localStorage.getItem("userJournalId")}`,
       { title, textfield }
     )
       .then((res) => {
@@ -94,7 +95,9 @@ const UpdateJournals = ({ history }) => {
             value={title}
             required
             onChange={handleTitle}
-          ></textarea>
+          >
+            {/* {localStorage.getItem("userTitle")} */}
+          </textarea>
           <textarea
             name="title"
             id="textarea"
@@ -105,7 +108,9 @@ const UpdateJournals = ({ history }) => {
             value={textfield}
             required
             onChange={handleTextfield}
-          ></textarea>
+          >
+            {/* {localStorage.getItem("userTextfield")} */}
+          </textarea>
         </div>
       </form>
     </div>

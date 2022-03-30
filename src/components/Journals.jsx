@@ -33,7 +33,7 @@ const Journals = ({ history }) => {
   //Handle state change functions
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log([title, textfield]);
+    // console.log([title, textfield]);
     Axios.post(
       `http://localhost:5000/api/auth/createJournal/${localStorage.getItem(
         "userId"
@@ -42,7 +42,7 @@ const Journals = ({ history }) => {
     )
       .then((res) => {
         console.log(res);
-        history.push("/home")
+        history.push("/home");
       })
       .catch((err) => {
         console.error(err);

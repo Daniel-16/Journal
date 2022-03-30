@@ -30,11 +30,30 @@ const UserJournals = ({ journals, search, deleteJournal, cardStyles }) => {
                     }}
                     style={{ cursor: "pointer" }}
                   ></span>
-                  <Link to="/updatejournal">
-                    <h5 className="card-title" style={{ color: "#283739" }}>
-                      {user.title}
+                  <Link
+                    to="/updatejournal"
+                    onClick={() => {
+                      localStorage.setItem("userTitle", user.title);
+                      localStorage.setItem("userTextfield", user.textfield);
+                      localStorage.setItem("userJournalId", user._id);
+                    }}
+                  >
+                    <h5
+                      className="card-title"
+                      style={{ color: "#283739" }}
+                      onClick={() => {
+                        console.log(user.title);
+                      }}
+                    >
+                      {user.title.length > 40
+                        ? `${user.title.substring(0, 40)}...`
+                        : user.title}
                     </h5>
-                    <p className="card-text">{user.textfield}</p>
+                    <p className="card-text">
+                      {user.textfield.length > 80
+                        ? `${user.textfield.substring(0, 80)}...`
+                        : user.textfield}
+                    </p>
                     <small className="text-muted">
                       {new Date(user.dateOfCreation).toDateString()}
                     </small>

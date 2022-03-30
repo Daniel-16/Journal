@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../Styles/profile.css";
 import Axios from "axios";
 import Modal from "./Modal";
+import { Link } from "react-router-dom";
 
 const UserProfile = ({ history }) => {
   const [deleteModal, setDeleteModal] = useState(false);
@@ -12,7 +13,7 @@ const UserProfile = ({ history }) => {
   }, [history]);
   const Logout = () => {
     localStorage.clear();
-    history.push("/login");
+    history.push("/");
   };
   //Delete user account
   const deleteAccount = () => {
@@ -81,21 +82,26 @@ const UserProfile = ({ history }) => {
       </div>
       <div className="card" style={{ borderRadius: "30px 30px 0px 0px" }}>
         <div className="card-body">
-          <button
-            onClick={Logout}
-            className="btn w-100 shadow-none"
-            id="userProfiles"
-            style={{
-              height: 50,
-              textTransform: "none",
-              fontSize: 18,
-              textAlign: "left",
-              padding: 5,
-            }}
+          <Link
+            to="/privacypolicy"
+            style={{ textDecoration: "none" }}
+            className="text-dark"
           >
-            <i className="fa fa-user-shield mr-2"></i>Privacy Policy
-            <i className="fa fa-angle-right float-right"></i>
-          </button>
+            <button
+              className="btn w-100 shadow-none"
+              id="userProfiles"
+              style={{
+                height: 50,
+                textTransform: "none",
+                fontSize: 18,
+                textAlign: "left",
+                padding: 5,
+              }}
+            >
+              <i className="fa fa-user-shield mr-2"></i>Privacy Policy
+              <i className="fa fa-angle-right float-right"></i>
+            </button>
+          </Link>
           <button
             onClick={toggleDeleteModal}
             className="btn w-100 shadow-none"
@@ -131,21 +137,26 @@ const UserProfile = ({ history }) => {
             <i className="fa fa-arrow-circle-left mr-2"></i>Log out
             <i className="fa fa-angle-right float-right"></i>
           </button>
-          <button
-            onClick={Logout}
-            className="btn w-100 shadow-none"
-            id="userProfiles"
-            style={{
-              height: 50,
-              textTransform: "none",
-              fontSize: 18,
-              textAlign: "left",
-              padding: 5,
-            }}
+          <Link
+            to="/reportproblem"
+            className="text-dark"
+            style={{ textDecoration: "none" }}
           >
-            <i className="fa fa-exclamation-circle mr-2"></i>Report a problem
-            <i className="fa fa-angle-right float-right"></i>
-          </button>
+            <button
+              className="btn w-100 shadow-none"
+              id="userProfiles"
+              style={{
+                height: 50,
+                textTransform: "none",
+                fontSize: 18,
+                textAlign: "left",
+                padding: 5,
+              }}
+            >
+              <i className="fa fa-exclamation-circle mr-2"></i>Report a problem
+              <i className="fa fa-angle-right float-right"></i>
+            </button>
+          </Link>
         </div>
       </div>
     </div>

@@ -151,7 +151,11 @@ const Home = ({ history }) => {
         <input
           className="form-control mt-2 shadow-none"
           placeholder="Search your journals"
-          style={{ backgroundColor: "lightgrey", border: "none" }}
+          style={{
+            backgroundColor: "lightgrey",
+            border: "none",
+            borderRadius: 10,
+          }}
           type="search"
           id="searchInput"
           value={search}

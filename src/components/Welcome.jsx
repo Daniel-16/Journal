@@ -7,25 +7,28 @@ const Welcome = () => {
   return (
     <div>
       <Navbar />
-      <div className="container" style={{ marginTop: "0rem" }}>
+      <div className="jumbotron" style={{ marginTop: "0rem" }}>
         <div className="row">
-          <div className="col-lg-7 col-sm">
-            <h3 className="font-weight-bold animated fadeInUp mt-5">
-              Welcome!
-            </h3>
-            <p className="animated fadeInUp" style={{ fontSize: "20px" }}>
-              Welcome to Journal, which is your online diary to keep daily
-              events of what happens to you. <br />
-              Whatever you do inside Journal is secured and can only be seen by
-              you.
+          <div className="col-md">
+            <img
+              src={NoteIllustration}
+              className="img-fluid"
+              alt="Illustration"
+            />
+          </div>
+          <div className="col-md">
+            <h4 className="text-center">Welcome to Journal</h4>
+            <hr />
+            <p className="text-center">
+              Journal is a web app to help you keep your thoughts orgranized
+              thereby also making your thoughts apprehensible.
               <br />
-              Just share a little more about yourself and you are all set to use
-              Journal.
+              Journals is also here to help you record your ideas on the go.
             </p>
             <div className="text-center">
-              <Link to="/signup">
+              <Link to="/home">
                 <button
-                  className="btn shadow-none"
+                  className="btn btn-sm shadow-none"
                   style={{
                     borderRadius: 5,
                     backgroundColor: "#6C63FF",
@@ -39,15 +42,44 @@ const Welcome = () => {
               </Link>
             </div>
           </div>
-          <div className="col-lg-5 col-sm">
-            <img
-              src={NoteIllustration}
-              className="img-fluid w-100 h-100"
-              style={{ marginTop: "1rem" }}
-              alt="Journal"
-            />
+        </div>
+      </div>
+      <div className="container">
+        <h4 className="text-center">Why Journal?</h4>
+        <hr />
+        <div className="row">
+          <div className="col-sm">
+            <p>
+              Having Journals has been proven to help increase our productivity.
+              But we do not carry our Journals (book, diary) with us everywhere
+              but we do carry our phones so we get to now document our daily
+              activities on the go.
+            </p>
+          </div>
+          <div className="col-sm">
+            <p>
+              Journals is also here to help you easily keep track of your daily
+              actvities. You get to search for particular journals and you have
+              the power to also edit your journals.
+            </p>
           </div>
         </div>
+        <h4 className="text-center">Benefits of Journal</h4>
+        <hr />
+        <p>
+          Journal is here to help you; Keep your thoughts organized, Improve
+          your writing, Set & achieve your goals, Keep record of your memories,
+          Inspire creativity and many more.
+          <br />
+          Journals created are protected with end-to-end encryption to prevent
+          third parties from having access to your privacy.
+          <br />
+          Now that you know why you need a journal, why not create an account or
+          log in to{" "}
+          <Link to="/home">
+            Get Started <span className="fa fa-arrow-right ml-2"></span>
+          </Link>
+        </p>
       </div>
     </div>
   );
