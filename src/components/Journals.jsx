@@ -17,7 +17,7 @@ const Journals = ({ history }) => {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
       };
-      Axios.get("http://localhost:5000/api/private", config)
+      Axios.get("https://journal-app123.herokuapp.com/api/private", config)
         .then(() => {
           return;
         })
@@ -35,7 +35,7 @@ const Journals = ({ history }) => {
     e.preventDefault();
     // console.log([title, textfield]);
     Axios.post(
-      `http://localhost:5000/api/auth/createJournal/${localStorage.getItem(
+      `https://journal-app123.herokuapp.com/api/auth/createJournal/${localStorage.getItem(
         "userId"
       )}`,
       { title, textfield }

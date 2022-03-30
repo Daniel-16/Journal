@@ -18,7 +18,9 @@ const UserProfile = ({ history }) => {
   //Delete user account
   const deleteAccount = () => {
     const userId = localStorage.getItem("userId");
-    Axios.delete(`http://localhost:5000/api/auth/deleteUser/${userId}`)
+    Axios.delete(
+      `https://journal-app123.herokuapp.com/api/auth/deleteUser/${userId}`
+    )
       .then(() => {
         history.push("/signup");
         localStorage.clear();

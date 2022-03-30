@@ -41,7 +41,7 @@ const Home = ({ history }) => {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
       };
-      Axios.get("http://localhost:5000/api/private", config)
+      Axios.get("https://journal-app123.herokuapp.com/api/private", config)
         .then(() => {
           setPrivateData(
             "Welcome! You can now add journals of your daily activities by clicking on the plus button at the bottom of your screen."
@@ -57,7 +57,7 @@ const Home = ({ history }) => {
         });
     };
     Axios.get(
-      `http://localhost:5000/api/auth/getJournal/${localStorage.getItem(
+      `https://journal-app123.herokuapp.com/api/auth/getJournal/${localStorage.getItem(
         "userId"
       )}`
     )
@@ -83,7 +83,7 @@ const Home = ({ history }) => {
 
   const deleteJournal = (id) => {
     Axios.delete(
-      `http://localhost:5000/api/auth/deleteJournal/${localStorage.getItem(
+      `https://journal-app123.herokuapp.com/api/auth/deleteJournal/${localStorage.getItem(
         "userId"
       )}/${id}`
     )

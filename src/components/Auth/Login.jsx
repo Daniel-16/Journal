@@ -34,7 +34,7 @@ const Login = ({ history }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    Axios.post("http://localhost:5000/api/auth/login", {
+    Axios.post("https://journal-app123.herokuapp.com/api/auth/login", {
       email,
       password,
     })

@@ -42,7 +42,7 @@ const Signup = ({ history }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     //Post the form fields to the database
-    Axios.post("http://localhost:5000/api/auth/register", {
+    Axios.post("https://journal-app123.herokuapp.com/api/auth/register", {
       fullname: username,
       email,
       password,
