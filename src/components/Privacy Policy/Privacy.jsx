@@ -115,7 +115,7 @@ const Privacy = ({ history }) => {
           <p>
             <strong>Website</strong> refers to Journal, accessible from{" "}
             <a
-              href="https://journal.netlify.app.com"
+              href="https://journal19.netlify.app"
               rel="external noreferrer nofollow noopener"
               target="_blank"
             >
