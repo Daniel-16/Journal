@@ -104,7 +104,7 @@ const Signup = ({ history }) => {
       </div>
       <form onSubmit={handleSubmit} style={{ marginTop: "0rem" }}>
         <MDBInput
-          label="Fullname"
+          label="Username"
           type="text"
           onChange={handleName}
           required
