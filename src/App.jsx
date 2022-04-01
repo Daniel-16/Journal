@@ -10,6 +10,8 @@ import UserProfile from "./components/UserProfile";
 import UpdateJournals from "./components/UpdateJournal";
 import Privacy from "./components/Privacy Policy/Privacy";
 import ReportProblem from "./components/ReportProblem";
+import ResetPassword from "./components/ResetPassword";
+import ForgotPassword from "./components/ForgotPassword";
 
 export const CredentialsContext = createContext();
 
@@ -29,6 +31,12 @@ const App = () => {
             <Route path="/updatejournal" component={UpdateJournals} />
             <Route path="/privacypolicy" component={Privacy} />
             <Route path="/reportproblem" component={ReportProblem} />
+            <Route
+              path="/resetpassword/:resetToken"
+              exact
+              component={ResetPassword}
+            />
+            <Route path="/forgotpassword" component={ForgotPassword} />
           </Switch>
         </Router>
       </CredentialsContext.Provider>

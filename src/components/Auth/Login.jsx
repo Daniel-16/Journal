@@ -60,7 +60,7 @@ const Login = ({ history }) => {
         */
         if (err.toString().includes("401")) {
           setErrorMessage(
-            "Login details are incorrect. Check your login details or create a new account if you don't have one."
+            "Login details are incorrect. Check your login details or create a new account if you don't have one. In case you forgot your password, click on 'Forgot Password'."
           );
         } else if (err.toString().includes("500")) {
           setErrorMessage("A Server error occured!");
@@ -107,9 +107,14 @@ const Login = ({ history }) => {
           }}
           onClick={toggle}
         ></i>
+        <small className="float-right mb-2">
+          <Link to="/forgotpassword" style={{ color: "#6C63FF" }}>
+            Forgot Password?
+          </Link>
+        </small>
         <div style={{ marginRight: 12 }}>
           <button
-            className="btn shadow-none"
+            className="btn"
             style={{
               backgroundColor: "#6C63FF",
               color: "white",
@@ -119,8 +124,16 @@ const Login = ({ history }) => {
               textTransform: "none",
             }}
             type="submit"
+            disabled={loading ? true : false}
           >
-            Log In
+            {!loading ? (
+              "Log in"
+            ) : (
+              <>
+                Loading
+                <i className="spinner-grow spinner-grow-sm text-white ml-2"></i>
+              </>
+            )}
           </button>
         </div>
       </form>
@@ -143,7 +156,7 @@ const Login = ({ history }) => {
           </MDBModalFooter>
         </div>
       </MDBModal>
-      {loading && (
+      {/* {loading && (
         <MDBModal
           isOpen={loaderModal}
           toggle={toggleLoaderModal}
@@ -156,7 +169,7 @@ const Login = ({ history }) => {
           </MDBModalBody>
           <div className="flex-center"></div>
         </MDBModal>
-      )}
+      )} */}
     </div>
   );
 };
