@@ -14,7 +14,6 @@ const Signup = ({ history }) => {
   const [errorModal, setErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [loaderModal, setLoaderModal] = useState(false);
 
   //The function below is to toggle the "see password" icon
   const toggle = () => {
@@ -26,9 +25,6 @@ const Signup = ({ history }) => {
   //The functions below are either to toggle functionalities or handle state change.
   const toggleModal = () => {
     setErrorModal(!errorModal);
-  };
-  const toggleLoaderModal = () => {
-    setLoaderModal(!loaderModal);
   };
   const handleName = (e) => {
     setName(e.target.value);
@@ -53,7 +49,6 @@ const Signup = ({ history }) => {
         localStorage.setItem("user", res.data.user.fullname);
         localStorage.setItem("userId", res.data.user._id);
         setLoading(true);
-        toggleLoaderModal();
         setTimeout(() => {
           history.push("/home");
         }, 3000);
@@ -147,8 +142,16 @@ const Signup = ({ history }) => {
               fontSize: 17,
             }}
             type="submit"
+            disabled={loading ? true : false}
           >
-            Create Account
+            {!loading ? (
+              "Create Account"
+            ) : (
+              <>
+                Loading
+                <i className="spinner-grow spinner-grow-sm text-white ml-2"></i>
+              </>
+            )}
           </button>
         </div>
       </form>
@@ -171,18 +174,6 @@ const Signup = ({ history }) => {
           </MDBModalFooter>
         </div>
       </MDBModal>
-      {loading && (
-        <MDBModal
-          isOpen={loaderModal}
-          toggle={toggleLoaderModal}
-          size="sm"
-          centered
-        >
-          <MDBModalBody className="text-center">
-            <div className="spinner-border text-primary mt-4 mb-4"></div>
-          </MDBModalBody>
-        </MDBModal>
-      )}
     </div>
   );
 };
