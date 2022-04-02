@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MDBInput, MDBModal, MDBModalBody, MDBModalFooter } from "mdbreact";
+import { MDBInput } from "mdbreact";
 import { Link } from "react-router-dom";
 import Loginimg from "../../Images/login.png";
 import Axios from "axios";
@@ -11,20 +11,12 @@ const Login = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [errorModal, setErrorModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [loaderModal, setLoaderModal] = useState(false);
 
   //The following blocks of code are to just toggle functionality and handle state change
   const toggle = () => {
     setToggledIcon(!toggleIcon);
     setShowPassword(!showPassword);
-  };
-  const toggleModal = () => {
-    setErrorModal(!errorModal);
-  };
-  const toggleLoaderModal = () => {
-    setLoaderModal(!loaderModal);
   };
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -44,7 +36,6 @@ const Login = ({ history }) => {
         localStorage.setItem("authToken", res.data.token);
         localStorage.setItem("userId", res.data.user._id);
         setLoading(true);
-        toggleLoaderModal();
         setTimeout(() => {
           history.push("/home");
         }, 3000);
@@ -52,7 +43,6 @@ const Login = ({ history }) => {
       .catch((err) => {
         console.error(err);
         localStorage.clear();
-        toggleModal();
         /*The conditional statement is to check the status code of an error converted to string to determine the error message. 
         400 = Bad request
         401 = Unauthorized
@@ -67,20 +57,26 @@ const Login = ({ history }) => {
         } else {
           setErrorMessage("An unknown error occured!");
         }
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 5000);
       });
   };
   return (
     <div
-      className="container mb-3"
+      className="container"
       //The purpose of the style below is to disable pointer events while the loader modal is up to prevent user from closing a loader modal.
       style={loading ? { pointerEvents: "none" } : { pointerEvents: "all" }}
     >
-      <h1 className="display-5 text-center" style={{ marginTop: "2rem" }}>
-        Log In
-      </h1>
       <div className="text-center">
-        <img className="img-fluid w-50 h-50" src={Loginimg} alt="Login" />
+        <img
+          className="img-fluid w-50 h-50"
+          src={Loginimg}
+          alt="Login"
+          style={{ marginTop: "2rem" }}
+        />
       </div>
+      <h1 className="display-5 text-center">Log In</h1>
       <form onSubmit={handleSubmit}>
         <MDBInput
           label="Email address"
@@ -112,6 +108,14 @@ const Login = ({ history }) => {
             Forgot Password?
           </Link>
         </small>
+        <br />
+        {errorMessage && (
+          <div className="text-center mt-2">
+            <small className="text-danger animated fadeInUp">
+              {errorMessage}
+            </small>
+          </div>
+        )}
         <div style={{ marginRight: 12 }}>
           <button
             className="btn"
@@ -145,31 +149,6 @@ const Login = ({ history }) => {
           </Link>
         </small>
       </div>
-      <MDBModal isOpen={errorModal} toggle={toggleModal} size="sm" centered>
-        <h5 className="modal-header text-center">Error logging in!</h5>
-        <MDBModalBody className="text-center">{errorMessage}</MDBModalBody>
-        <div className="flex-center">
-          <MDBModalFooter>
-            <button className="btn btn-danger btn-sm" onClick={toggleModal}>
-              Close
-            </button>
-          </MDBModalFooter>
-        </div>
-      </MDBModal>
-      {/* {loading && (
-        <MDBModal
-          isOpen={loaderModal}
-          toggle={toggleLoaderModal}
-          size="sm"
-          centered
-          className="h-100"
-        >
-          <MDBModalBody className="text-center">
-            <div className="spinner-border text-primary mt-4 mb-4"></div>
-          </MDBModalBody>
-          <div className="flex-center"></div>
-        </MDBModal>
-      )} */}
     </div>
   );
 };

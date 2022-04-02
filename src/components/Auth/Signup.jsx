@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MDBInput, MDBModal, MDBModalBody, MDBModalFooter } from "mdbreact";
+import { MDBInput } from "mdbreact";
 import { Link } from "react-router-dom";
 import SignInImage from "../../Images/sign-in.png";
 import Axios from "axios";
@@ -11,7 +11,6 @@ const Signup = ({ history }) => {
   const [username, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorModal, setErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -20,12 +19,7 @@ const Signup = ({ history }) => {
     setToggledIcon(!toggleIcon);
     setShowPassword(!showPassword);
   };
-
-  //The function below is to toggle the error Modal
-  //The functions below are either to toggle functionalities or handle state change.
-  const toggleModal = () => {
-    setErrorModal(!errorModal);
-  };
+  //The functions below are to handle state change.
   const handleName = (e) => {
     setName(e.target.value);
   };
@@ -44,18 +38,19 @@ const Signup = ({ history }) => {
       password,
     })
       .then((res) => {
+        setLoading(true);
         console.log(res.data);
         localStorage.setItem("authToken", res.data.token);
         localStorage.setItem("user", res.data.user.fullname);
         localStorage.setItem("userId", res.data.user._id);
-        setLoading(true);
         setTimeout(() => {
           history.push("/home");
+          setLoading(false);
         }, 3000);
       })
       .catch((err) => {
         console.error(err);
-        toggleModal();
+        // toggleModal();
         /*The conditional statement is to check the status code of an error converted to string to determine the error message. 
         400 = Bad request
         401 = Unauthorized
@@ -71,6 +66,9 @@ const Signup = ({ history }) => {
         } else {
           setErrorMessage("An unknown error occured.");
         }
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 5000);
         localStorage.clear();
       });
   };
@@ -87,16 +85,15 @@ const Signup = ({ history }) => {
         loading ? { pointerEvents: "none" } : { pointerEvents: "all" })
       }
     >
-      <h1 className="display-5 text-center" style={{ marginTop: "2rem" }}>
-        Create Account
-      </h1>
       <div className="text-center">
         <img
           src={SignInImage}
           className="img-fluid w-50 h-50"
           alt="Create account"
+          style={{ marginTop: "2rem" }}
         />
       </div>
+      <h1 className="display-5 text-center">Create Account</h1>
       <form onSubmit={handleSubmit} style={{ marginTop: "0rem" }}>
         <MDBInput
           label="Username"
@@ -130,9 +127,16 @@ const Signup = ({ history }) => {
           }}
           onClick={toggle}
         ></i>
+        {errorMessage && (
+          <div className="text-center">
+            <small className="animated fadeInUp text-danger">
+              {errorMessage}
+            </small>
+          </div>
+        )}
         <div style={{ marginRight: 12 }}>
           <button
-            className="btn shadow-none"
+            className="btn"
             style={{
               backgroundColor: "#6C63FF",
               color: "white",
@@ -163,17 +167,6 @@ const Signup = ({ history }) => {
           </Link>
         </small>
       </div>
-      <MDBModal isOpen={errorModal} toggle={toggleModal} size="sm" centered>
-        <h5 className="modal-header text-center">Error Creating Account!</h5>
-        <MDBModalBody className="text-center">{errorMessage}</MDBModalBody>
-        <div className="flex-center">
-          <MDBModalFooter>
-            <button className="btn btn-danger btn-sm" onClick={toggleModal}>
-              Close
-            </button>
-          </MDBModalFooter>
-        </div>
-      </MDBModal>
     </div>
   );
 };
